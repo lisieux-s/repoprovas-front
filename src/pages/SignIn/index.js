@@ -7,12 +7,11 @@ import api from '../../services/api';
 
 import LOGO from '../../assets/logo.svg';
 
-export default function SignUp() {
+export default function SignIn() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    passwordConfirm: '',
   });
 
   function handleGithubSignUp(e) {
@@ -22,22 +21,12 @@ export default function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (formData.password !== formData.passwordConfirm) {
-        alert('As senhas devem ser iguais');
-      }
 
-      await api.signUp({
-        email: formData.email,
-        password: formData.password,
-      });
-      navigate('/sign-in')
+      await api.signIn(formData);
+      navigate('/disciplines')
 
     } catch (error) {
-      if (error.response.status === 409) {
-        alert('Esse e-mail já está sendo usado');
-      } else {
         alert('Por favor, tente novamente');
-      }
     }
   }
 
@@ -70,17 +59,9 @@ export default function SignUp() {
           onChange={(e) => handleChange(e)}
           required
         />
-        <input
-          placeholder='Confirme sua senha'
-          type='password'
-          name='passwordConfirm'
-          value={formData.passwordConfirm}
-          onChange={(e) => handleChange(e)}
-          required
-        />
         <div>
-          <Link to='/sign-in'>Já possuo cadastro</Link>
-          <button onClick={(e) => handleSubmit(e)}>Cadastrar</button>
+          <Link to='/sign-up'>Ainda não possuo cadastro</Link>
+          <button onClick={(e) => handleSubmit(e)}>Entrar</button>
         </div>
       </Form>
     </Page>
